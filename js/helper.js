@@ -11,7 +11,7 @@
 function startHelper(frameIndex){
 $(document).ready(function(){
 			//Cursor in das andere Frame einpflanzen
-			$('body', window.parent.frames[frameIndex].document).append('<div id="cursorbox"><img style="position: absolute; z-index: 100;" id="cursor" src="../tutorial/cursor.png"/></div>');
+			$('body', window.parent.frames[frameIndex].document).append('<div id="cursorbox"><img style="position: absolute; z-index: 100;" id="cursor" src="tutorial/img/cursor.png"/></div>');
 			
 			//Position des Cursors bestimmen
 			var x;

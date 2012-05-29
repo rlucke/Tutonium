@@ -28,24 +28,19 @@ function format(testCase, name){
 					case 'clickAndWait': clicks.push(command.target); break; //Clickevent fuer den helper
 					case 'verifyLocation': target = command.target; break; //Zeil URL
                     case 'verifyPath': targetPath = command.target; break; //Ziel Pfad
-					case 'storeTitle': title = command.value; break; //Titel der Aufgabe
-					case 'storeText' : tasktext = command.value; break; //Beschreibungstext der Aufgabe
+					case 'storeTitle': title = toGoodHTML(command.value); break; //Titel der Aufgabe
+					case 'storeText' : tasktext = toGoodHTML(command.value); break; //Beschreibungstext der Aufgabe
 					case 'verifyElementPresent' : targetElement = command.target; break; //Element das vorhanden sein soll
 					case 'verifyTextPresent' : targetTextPresent = command.target; break; //Text der vorhanden sein soll
 					case 'verifyText' : targetText = command.target; break; //Text der an einer bestimmten Stelle vorhanden sein soll
-					case 'select' : selectID = command.target; selectVal = command.value; break; //id des Dropdown und Wert der in einem Dropdown ausgewaehlt wurde
+					case 'select' : select = command.target; selectVal = command.value; break; //id des Dropdown und Wert der in einem Dropdown ausgewaehlt wurde
 					
 				}
 				
 				
 			}
 		}
-		
 	
-	title = title.trim();
-
-		
-		
 	//das clicks Array durchlaufen und die passenden Jquery Ausdrücke erzeugen
 	var helperArray =  new Array();
 	for (var h=0; h<clicks.length; h++){
@@ -59,10 +54,10 @@ function format(testCase, name){
 	//select Verarbeitung
 	var selectQuery = ''; 
 	
-	switch (selectID.split('=')[0]){
-		case 'id': selectQuery = '#' + selectID.split('=')[1]; break;
-		case 'name': break;
-		case 'css': break;
+	switch (select.split('=')[0]){
+		case 'id': selectQuery = '#' + select.split('=')[1]; break;
+		case 'name': selectQuery = '*[name='+select.split('=')[1]+']'; break;
+		case 'css': selectQuery = select.split('=')[1]; break;
 	
 	}
 		
@@ -222,6 +217,27 @@ function format(testCase, name){
 		return targetText;
 	}
 	
+	function toGoodHTML(text){
+
+		text = text.trim();
+		if(!text) return '';
+		text = text.replace(/&/g,"&amp;");
+		var new_text = '';
+
+		for(var i = 0; i < text.length; i++) {
+			var c = text.charCodeAt(i);
+			if(c < 128) {
+				new_text += String.fromCharCode(c);
+			}
+			else {
+				new_text += '&#' + c +';';
+			}
+		}
+		return new_text.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+		
+	
+		
+	}
 
 
 String.prototype.startsWith = function(str){return (this.match("^"+str)==str)}
