@@ -10,8 +10,10 @@
  */
 function startHelper(frameIndex){
 $(document).ready(function(){
+			var srcIndex = $("#tutonium", window.parent.document).index();
+			var url = (((window.parent.frames[srcIndex].document.URL).split("tutonium.html"))[0]);
 			//Cursor in das andere Frame einpflanzen
-			$('body', window.parent.frames[frameIndex].document).append('<div id="cursorbox"><img style="position: absolute; z-index: 100;" id="cursor" src="tutorial/img/cursor.png"/></div>');
+			$('body', window.parent.frames[frameIndex].document).append('<div id="cursorbox"><img style="position: absolute; z-index: 100;" id="cursor" src="'+url+'/cursor.png"/></div>');
 			
 			//Position des Cursors bestimmen
 			var x;
@@ -43,8 +45,11 @@ $(document).ready(function(){
  *@param speed Geschwindigkeit in der die Animation ablaufen soll
  *@param frameIndex Ziel Frame in dem der Curser eingebettet werden soll
  */
-function aniMoveToElement(select, speed, frameIndex)
+function aniMoveToElement(select, speed, frameIndex, highlight)
 {
+	//default highlight
+	if (typeof highlight == "undefined") {highlight = true;}
+
 	//element position
 	var pos = $(select, window.parent.frames[frameIndex].document).offset();	// left and top
 	var left = parseInt(pos.left);
@@ -69,7 +74,7 @@ function aniMoveToElement(select, speed, frameIndex)
 	// moving to element
 	$('#cursor', window.parent.frames[frameIndex].document).animate({"left": "+="+left+"px", "top": "+="+top+"px"}, speed);
 	//highlight element
-	$(select, window.parent.frames[frameIndex].document).delay(speed).effect("highlight", {color:'#0073ea'}, speed/2);
+	if(highlight)$(select, window.parent.frames[frameIndex].document).delay(speed).effect("highlight", {color:'#0073ea'}, speed/3*2);
 	//scroll to element
 	$('html, body', window.parent.frames[frameIndex].document).animate({scrollTop: top}, speed).delay(speed/2);
 	

@@ -13,7 +13,7 @@ function format(testCase, name){
 	var tasktext = '';
 	var targetTextPresent = '';
 	var targetText = '';
-	var selectID = '';
+	var select = '';
 	var selectVal = '';
 	var selectCheck = '';
 		
@@ -26,6 +26,7 @@ function format(testCase, name){
 				switch(command.command){
 					case 'open': start = command.target; break; //Anfangs URL der Aufgabe
 					case 'clickAndWait': clicks.push(command.target); break; //Clickevent fuer den helper
+					case 'click' : clicks.push(command.target); break; //Clickevent fuer den helper
 					case 'verifyLocation': target = command.target; break; //Zeil URL
                     case 'verifyPath': targetPath = command.target; break; //Ziel Pfad
 					case 'storeTitle': title = toGoodHTML(command.value); break; //Titel der Aufgabe
