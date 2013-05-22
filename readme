@@ -17,7 +17,7 @@ find tutonium in your selenium ide plug-in.
 
 
 Usage:
-To create a tutorial you need do build test cases. Each case represents 
+To create a tutorial you need to build test cases. Each case represents 
 a task (tab) in the tutorial. First you have to discribe the task. Use 
 selenium command storeText and put some text into the value field.
 
