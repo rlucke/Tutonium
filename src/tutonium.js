@@ -1,14 +1,14 @@
 /***************************************************************************************************************************
 *									  |||			T U T O N I U M 		|||											   *
 *																														   *
-*										        Formatter for Selenium 													   *
+*										             by Ron Lucke 													       *
 ***************************************************************************************************************************/
 
 
 function formatSuite(testSuite, filename) {
 var urllist = new Array();
 var header= '<!doctype html> <html lang="en"> <head> <meta charset="utf-8" />  <title>\n ';
-header += filename + '</title>\n  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/cupertino/jquery-ui.css" />\n ';
+header += options.title + '</title>\n  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/'+options.jQueryUIStyle+'/jquery-ui.css" />\n ';
 header += buildStyle();
 header += '<script src="http://code.jquery.com/jquery-1.9.1.js"></script>\n <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>\n ';
 header += '<script> $(function() {$( "#tabs" ).tabs({activate: function(event, ui) { switch ($(this).tabs("option", "active" )){';
@@ -19,7 +19,7 @@ var helperscript = '<script>';
 helperscript += '\n'; 
 //animation function 
 helperscript += 'function aniMoveToElement(select, speed, frameIndex, tab){\n'; 
-helperscript += 'var script = \'<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/cupertino/jquery-ui.css" /> <style>.ui-icon{background-size: 512px 480px; height: 32px; width: 32px; background-position: -224px -96px}</style>\';\n'; 
+helperscript += 'var script = \'<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/'+options.jQueryUIStyle+'/jquery-ui.css" /> <style>.ui-icon{background-size: 512px 480px; height: 32px; width: 32px; background-position: -224px -96px}</style>\';\n'; 
 helperscript += 'var $head = $(\'head\', window.frames[frameIndex].document);\n'; 
 helperscript += 'var $body = $(\'body\', window.frames[frameIndex].document);\n'; 
 helperscript += 'var $bodyHTML = $(\'html, body\', window.frames[frameIndex].document);\n'; 
@@ -43,7 +43,7 @@ helperscript += 'top -=  parseInt($cursorbox.offset().top)-5;\n';
 helperscript += '// moving to element\n'; 
 helperscript += '$cursorbox.animate({"left": "+="+left+"px", "top": "+="+top+"px"}, speed ,function(){\n'; 
 helperscript += 'var $bg = $select.css(\'background\');\n'; 
-helperscript += '$select.css(\'background\', \'red\'); //highlight\n'; 
+helperscript += '$select.css(\'background\', \''+options.highlight+'\'); //highlight\n'; 
 helperscript += 'setTimeout( function(){\n'; 
 helperscript += '$select.css(\'background\', $bg);\n'; 
 helperscript += '$body.css("cursor", "default");\n'; 
@@ -196,9 +196,9 @@ function buildcheckfunction(testCaseContent, tabnum){
 	}
 
 	//set dialogtext
-	var right = '<p>Super!</p><p>Sie haben diese Aufgabe richtig gel&ouml;st.</p>';
-	var wrong = '<p>Leider nicht richtig!</p><p>Versuchen Sie es noch einmal.</p>';
-	var title = '&Uuml;berpr&uuml;fung';
+	var right = options.success_text;
+	var wrong = options.mistake_text;
+	var title = options.checker_title;
 	
 	//bulding function string
 	
@@ -277,8 +277,8 @@ function getTask(testCaseContent, id){
 	}
 	
 	body  += '<p>'+ tasktext +'</p>\n';
-	if (helper)	body  += '<div id="help-tabs-'+id+'" class="help"><span class="ui-icon ui-icon-circle-triangle-e"></span><span class="helptext" >Klicken Sie hier um sich helfen zu lassen.</span></div>\n';
-	if (checker) body  += '<div id="check-tabs-'+id+'" class="check"><span class="ui-icon ui-icon-check"></span><span class="checktext" >pr&uuml;fen</span></div>\n';
+	if (helper)	body  += '<div id="help-tabs-'+id+'" class="help"><span class="ui-icon ui-icon-circle-triangle-e"></span><span class="helptext" >'+options.helper_text+'</span></div>\n';
+	if (checker) body  += '<div id="check-tabs-'+id+'" class="check"><span class="ui-icon ui-icon-check"></span><span class="checktext" >'+options.checker_text+'</span></div>\n';
 	
 	return body;
 	
@@ -351,12 +351,12 @@ function getAnimation(testCaseContent){
 function buildStyle(){
 	var style = '<style type="text/css">';
 	style += '*{ margin: 0; padding: 0; }';
-	style += 'body{ background: #2779AA;}';
-	style += '#wrapper{ width: 1024px; margin: 0 auto;}';
+	style += 'body{ background: '+options.bgcolor+';}';
+	style += '#wrapper{ width: '+options.width+'px; margin: 0 auto;}';
 	style += '';
 	style += '#tabs{margin: 15px 0px; font-size: 12px;}';
 	style += '#external {width: 100%;height: 600px;	border: solid 1px #DDD;	border-radius: 6px;	}';
-	style += '.helptext , .checktext{color: #2779AA;vertical-align:top;	margin-left: 5px;}';
+	style += '.helptext , .checktext{color: '+options.textcolor+';vertical-align:top;	margin-left: 5px;}';
 	style += '.ui-icon{	display: inline-block;}';
 	style += '.check, .help{cursor: pointer;}';
 	style += '.hidden{	visibility: hidden;}';
@@ -410,3 +410,75 @@ function verifyTextProcessing(targetText){
 	return targetText;
 }
 String.prototype.startsWith = function(str){return (this.match("^"+str)==str)}
+
+function defaultExtension() {
+  return this.options.defaultExtension;
+}
+
+/*
+ * Optional: The customizable option that can be used in format/parse functions.
+ */
+this.options = {
+	title: "Tutonium",
+
+	width: "1024",
+	
+	bgcolor: "#2779AA",
+	
+	textcolor: "#2779AA",
+	
+	jQueryUIStyle: "cupertino",
+	
+	highlight: "red",
+	
+	helper_text: "Klicken Sie hier um sich helfen zu lassen.",
+	
+	checker_text: "pr&uuml;fen",
+	
+	checker_title: "&Uuml;berpr&uuml;fung",
+	
+	success_text: "<p>Super!</p><p>Sie haben diese Aufgabe richtig gel&ouml;st.</p>",
+	
+	mistake_text: "<p>Leider nicht richtig!</p><p>Versuchen Sie es noch einmal.</p>",
+
+	defaultExtension: "html"
+
+};
+
+this.configForm = 
+	'<description>Hello and wellcome at Tutonium for Selenium IDE</description>'+
+	'<separator class="groove"/>' +
+	'<description>title:</description>' +
+	'<textbox id="options_title" flex="1"/>' +
+	'<separator class="thin"/>'+
+	'<description>width in px:</description>' +
+	'<textbox id="options_width" flex="1"/>' +
+	'<separator class="thin"/>'+
+	'<description>background color:</description>' +
+	'<textbox id="options_bgcolor" flex="1"/>' +
+	'<separator class="thin"/>'+
+	'<description>helper and checker text color:</description>' +
+	'<textbox id="options_textcolor" flex="1"/>' +
+	'<separator class="thin"/>'+
+	'<description>highlight color:</description>' +
+	'<textbox id="options_highlight" flex="1"/>' +
+	'<separator class="thin"/>'+
+	'<description>jQuery UI style (like: cupertino, start, smoothness etc.):</description>' +
+	'<textbox id="options_jQueryUIStyle" flex="1"/>' +
+	'<separator class="thin"/>'+
+	'<description>helper text:</description>' +
+	'<textbox id="options_helper_text" flex="1"/>' +
+	'<separator class="thin"/>'+
+	'<description>checker text:</description>' +
+	'<textbox id="options_checker_text" flex="1"/>' +
+	'<separator class="thin"/>'+
+	'<description>checker title:</description>' +
+	'<textbox id="options_checker_title" flex="1"/>' +
+	'<separator class="thin"/>'+
+	'<description>success text:</description>' +
+	'<textbox id="options_success_text" flex="1"/>' +
+	'<separator class="thin"/>'+
+	'<description>mistake text:</description>' +
+	'<textbox id="options_mistake_text" flex="1"/>' +
+	'<separator class="thin"/>';
+
