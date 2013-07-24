@@ -210,7 +210,7 @@ function buildcheckfunction(testCaseContent, tabnum){
 }
 
 
-function toGoodHTML(text){
+function processMarkups(text){
 
 		text = text.trim();
 		if(!text) return '';
@@ -227,9 +227,23 @@ function toGoodHTML(text){
 				new_text += '&#' + c +';';
 			}
 		}
-		
-		
-		return new_text.replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\\/g,"<br>");
+		//arrows
+		new_text = new_text.replace(/<-/g, "&larr;").replace(/->/g, "&rarr;");
+		//escaping html injections
+		new_text = new_text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+		//breake
+		new_text  = new_text.replace(/\\/g,"<br>");
+		//anchor
+		new_text = new_text.replace(/\[\[(.+)[|](.+)\]\]/g, '<a href="$1" target="_blank">$2</a>');
+		//italic
+		new_text = new_text.replace(/[']{2}(.+)[']{2}/g, '<i>$1</i>');
+		//bold
+		new_text = new_text.replace(/[']{3}(.+)[']{3}/g, '<b>$1</b>');
+		//textcolor
+		new_text = new_text.replace(/%(\w+)%(.+)%%/g, '<span style="color:$1;">$2</span>');
+		//additional characters
+		new_text = new_text.replace(/\[(\w+)\]/g, '&$1;');
+		return new_text;
 		
 	
 		
@@ -260,7 +274,7 @@ function getTask(testCaseContent, id){
 		var command = commands[i];
 		if (command.type == 'command'){
 			switch(command.command){
-				case 'storeText' : tasktext = toGoodHTML(command.value); break;
+				case 'storeText' : tasktext = processMarkups(command.value); break;
 				//helper
 				case 'clickAndWait': helper = true; break;
 				case 'click' : helper = true; break;
