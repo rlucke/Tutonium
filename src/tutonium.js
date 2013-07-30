@@ -19,13 +19,11 @@ var helperscript = '<script>';
 helperscript += '\n'; 
 //animation function 
 helperscript += 'function aniMoveToElement(select, speed, frameIndex, tab){\n'; 
-helperscript += 'var script = \'<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/'+options.jQueryUIStyle+'/jquery-ui.css" /> <style>.ui-icon{background-size: 512px 480px; height: 32px; width: 32px; background-position: -224px -96px}</style>\';\n'; 
 helperscript += 'var $head = $(\'head\', window.frames[frameIndex].document);\n'; 
 helperscript += 'var $body = $(\'body\', window.frames[frameIndex].document);\n'; 
 helperscript += 'var $bodyHTML = $(\'html, body\', window.frames[frameIndex].document);\n'; 
 helperscript += 'var $select = $(select, window.parent.frames[frameIndex].document);\n'; 
-helperscript += '$head.append(script);\n'; 
-helperscript += '$body.append(\'<div id="cursorbox"><span class="ui-icon ui-icon-arrowthick-1-nw"></span></div>\');\n'; 
+helperscript += '$body.append(\'<div id="cursorbox"><svg xmlns:svg="http://www.w3.org/2000/svg" version="1.1"><polyline points="0,0 24,12 0,24 6,12" transform="matrix(-0.7,-0.7,0.7,-0.7,8,25)" style="fill:'+options.bgcolor+'" /></svg></div>\');\n'; 
 helperscript += 'var $cursorbox = $body.find(\'#cursorbox\');\n'; 
 helperscript += '$cursorbox.css(\'width\' , 32 + \'px\').css(\'height\' , 32 + \'px\').css(\'position\' , \'absolute\').css(\'left\' , 500 + \'px\').css(\'top\' , 200 + \'px\');\n'; 
 helperscript += '//change cursor \n'; 
@@ -348,7 +346,7 @@ function getAnimation(testCaseContent){
 	
 	if (helper){
 		var anitime = 2000; 
-		var timeout = anitime; 
+		var timeout = anitime+1000; 
 		task += 'aniMoveToElement(\"'+helperArray[0]+'\",'+anitime+', srcIndex, $(this));\n';
 		
 		for(var k = 1; k < helperArray.length; k++){
