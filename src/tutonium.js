@@ -399,7 +399,7 @@ function clickProcessing(click){
 
 function verifyTextProcessing(targetText){
 	
-	if(targetText.startsWith('css=')) targetText =  targetText.slice(4);
+	if(targetText.startsWith('css=')) return targetText.slice(4);
 	if(targetText.startsWith('//')) {
 		targetText =  targetText.slice(2);
 		var textArray = targetText.split('/');
@@ -416,10 +416,11 @@ function verifyTextProcessing(targetText){
 			}
 			targetText += textArray[i]+' ';
 		}
+		return targetText;
 	}
-	else targetText = '';		
+	else  return '';		
 
-	return targetText;
+	
 }
 String.prototype.startsWith = function(str){return (this.match("^"+str)==str)}
 
