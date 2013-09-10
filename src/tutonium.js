@@ -177,8 +177,8 @@ function buildcheckfunction(testCaseContent, tabnum){
 	
 	
 	//process text
-	if(targetTextPresent != '') conditions.push("$('html, body', window.frames[srcIndex].document).text().replace(/  /g, " ").contains('"+targetTextPresent+"')");
-	if((verifyTextTarget != '')&&(verifyTextValue != ''))conditions.push("$('html, body', window.frames[srcIndex].document).find('"+verifyTextProcessing(verifyTextTarget)+"').html().indexOf('"+verifyTextValue+"') != -1");
+	if(targetTextPresent != '') conditions.push("$('html, body', window.frames[srcIndex].document).text().replace(/  /g, ' ').contains('"+targetTextPresent+"') ");
+	if((verifyTextTarget != '')&&(verifyTextValue != '') )conditions.push("$('html, body', window.frames[srcIndex].document).find('"+verifyTextProcessing(verifyTextTarget)+"').html().indexOf('"+verifyTextValue+"') != -1");
 		
 	//process path and location
 	if(target != '') conditions.push('(document.getElementById("external").contentDocument.baseURI == \"'+ target +'\")');
@@ -238,7 +238,7 @@ function processMarkups(text){
 		//bold
 		new_text = new_text.replace(/[']{3}(\w+)[']{3}/g, '<b>$1</b>');
 		//textcolor
-		new_text = new_text.replace(/%(\w+)%(\w+)%%/g, '<span style="color:$1;">$2</span>');
+		new_text = new_text.replace(/%(\w+)%(.+)%%/g, '<span style="color:$1;">$2</span>');
 		//additional characters
 		new_text = new_text.replace(/\[(\w+)\]/g, '&$1;');
 		return new_text;
